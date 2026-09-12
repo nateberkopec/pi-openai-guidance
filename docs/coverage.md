@@ -12,7 +12,7 @@ Retrieved 2026-09-11 from official OpenAI Markdown endpoints. These are bundled 
 | [Codex](sources/codex.md) | https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide | https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide.md |
 | [GPT-5.6 family](sources/gpt-5.6.md) | https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6 | https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6.md |
 
-The GPT-5.6 guide explicitly says it applies to “GPT-5.6 Sol or the GPT-5.6 family.” That is the basis for sharing its instructions with Luna; no invented Luna-only prompt is supplied. The Codex guide targets GPT-5.3-Codex and starts from GPT-5.1-Codex-Max instructions. Applying its general coding guidance to the three target models is an explicit adaptation, not a claim that they are Codex-tuned models.
+The GPT-5.6 guide explicitly says it applies to “GPT-5.6 Sol or the GPT-5.6 family.” That is the basis for sharing its instructions with Luna and Terra; no model-specific prompt is invented for either. The Codex guide targets GPT-5.3-Codex and starts from GPT-5.1-Codex-Max instructions. Applying its general coding guidance to the four target models is an explicit adaptation, not a claim that they are Codex-tuned models.
 
 Original guide text is attributed to OpenAI (Codex guide authors Noah MacCallum and Brian Fioca). Snapshots include example code as documentary evidence only: it is never executed or imported. Runtime prompt files contain only text. Whitespace, indentation, code fences, and leading bullet markers are normalized during extraction; prose marked verbatim is otherwise unchanged.
 
@@ -29,7 +29,7 @@ Pi integration was checked against installed `@earendil-works/pi-coding-agent@0.
 | Astra readable inter-agent messages | Implemented | `astra.legible-messages` |
 | Astra meaningful tests and stop verification | Implemented | Two separate switches; compatible with Codex behavior-regression tests |
 | Astra recommendation to audit accessible skills | Omitted | User explicitly excluded reviewing existing skills; extension does not inspect them |
-| Codex identity as Codex CLI/GPT-5 | Omitted | False identity in Pi/Astra/Sol/Luna |
+| Codex identity as Codex CLI/GPT-5 | Omitted | False identity in Pi/Astra/Sol/Luna/Terra |
 | Codex general search/tool preferences | Adapted | Prefer available dedicated tools, fall back to shell; omitted unconditional `rg` preference in favor of Pi's dedicated search tools |
 | Codex general parallel calls and exploration/reading section | Adapted | `codex.parallel-reads` uses newer family dependency-aware wording, not fictional `multi_tool_use.parallel` or exclusive scripting bans; Pi schedules sibling calls |
 | Codex line-number metadata | Implemented | `codex.line-metadata` |
@@ -42,7 +42,7 @@ Pi integration was checked against installed `@earendil-works/pi-coding-agent@0.
 | Codex frontend tasks | Adapted | Seven independently switchable bullets, each carries original design-system exception; introductory “AI slop”/“bold” prose omitted as redundant with originality bullet |
 | Codex presenting work | Adapted | Questions, file dumps, same-machine context, next steps, change explanations, command-output reporting retained; generic brevity/heading/substantial/simple-format bullets replaced by model-specific writing guidance |
 | Codex final-answer formatting subsection | Omitted | Detailed heading/bullet/CLI-format prescriptions superseded by model-specific writing defaults; file-reference formatting also left to Pi rather than duplicated |
-| Codex old preamble prohibition / frequent update cadence | Adapted | GPT-5.6 sparse multi-step preamble snippet for Sol/Luna and shared onto Astra (`astra.updates`); neither old prohibition nor 1–3-step cadence injected |
+| Codex old preamble prohibition / frequent update cadence | Adapted | GPT-5.6 sparse multi-step preamble snippet for Sol/Luna/Terra and shared onto Astra (`astra.updates`); neither old prohibition nor 1–3-step cadence injected |
 | Codex friendly/pragmatic personalities | Omitted | Alternative examples, not simultaneous defaults; no invented personality selected |
 | Codex troubleshooting/metaprompting | Documentation | Source snapshot retains advice; no automatic self-rewriting prompts or background evals |
 | GPT-5.6 outcome-first / stopping | Implemented | `gpt-5.6.stop`; customer eligibility example omitted because this is not a support bot |

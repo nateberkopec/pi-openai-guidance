@@ -18,7 +18,7 @@ const ids = (id: string, disabled: string[] = [], active = tools) =>
 test("exact supported model/provider pairs, no heuristics or inherited object keys", () => {
   for (const provider of ["openai", "openai-codex"]) {
     assert.equal(modelFamily(model("gpt-6-astra", provider)), "astra");
-    for (const id of ["gpt-5.6-sol", "gpt-5.6-luna"]) assert.equal(modelFamily(model(id, provider)), "family");
+    for (const id of ["gpt-5.6-sol", "gpt-5.6-luna", "gpt-5.6-terra"]) assert.equal(modelFamily(model(id, provider)), "family");
   }
   for (const id of ["gpt-6-astra-mini", "gpt-5.6", "gpt-5.3-codex", "toString"])
     assert.equal(modelFamily(model(id)), undefined);
@@ -26,10 +26,10 @@ test("exact supported model/provider pairs, no heuristics or inherited object ke
   assert.equal(modelFamily(), undefined);
 });
 
-test("Astra-only guidance never leaks to Sol/Luna; family guidance is included", () => {
+test("Astra-only guidance never leaks to Sol/Luna/Terra; family guidance is included", () => {
   assert(ids("gpt-6-astra").includes("astra.follow-through"));
   assert(!ids("gpt-6-astra").includes("gpt-5.6.scope"));
-  for (const id of ["gpt-5.6-sol", "gpt-5.6-luna"]) {
+  for (const id of ["gpt-5.6-sol", "gpt-5.6-luna", "gpt-5.6-terra"]) {
     assert(ids(id).includes("gpt-5.6.scope"));
     assert(ids(id).includes("gpt-5.6.validation"));
     assert(ids(id).every(rule => !rule.startsWith("astra.")));
@@ -37,7 +37,7 @@ test("Astra-only guidance never leaks to Sol/Luna; family guidance is included",
 });
 
 test("every rule is independently removable and all other rules remain unchanged", () => {
-  for (const id of ["gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-luna"]) {
+  for (const id of ["gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-luna", "gpt-5.6-terra"]) {
     const enabled = ids(id);
     for (const rule of enabled) assert.deepEqual(ids(id, [rule]), enabled.filter(value => value !== rule));
     assert.deepEqual(ids(id, enabled), []);
@@ -88,8 +88,9 @@ test("preserves base prompt byte-for-byte, deterministic assembly, no accumulati
 
 test("real extension hook switches models, rereads opt-outs, and leaves other events alone", () => {
   const dir = mkdtempSync(join(tmpdir(), "guidance-hook-"));
-  const home = process.env.HOME;
-  process.env.HOME = dir;
+  const homeKey = process.platform === "win32" ? "USERPROFILE" : "HOME";
+  const home = process.env[homeKey];
+  process.env[homeKey] = dir;
   type Handler = (event: { systemPrompt: string }, ctx: { model?: ReturnType<typeof model> }) => { systemPrompt: string } | undefined;
   const handlers = new Map<string, Handler>();
   let active = tools;
@@ -105,7 +106,9 @@ test("real extension hook switches models, rereads opt-outs, and leaves other ev
     assert(!sol.includes("### astra."));
     const luna = run({ systemPrompt: base }, { model: model("gpt-5.6-luna") })!.systemPrompt;
     assert.equal(sol, luna);
-    assert.equal(run({ systemPrompt: luna }, { model: model("other") })!.systemPrompt, base);
+    const terra = run({ systemPrompt: luna }, { model: model("gpt-5.6-terra") })!.systemPrompt;
+    assert.equal(terra, luna);
+    assert.equal(run({ systemPrompt: terra }, { model: model("other") })!.systemPrompt, base);
     assert.equal(run({ systemPrompt: base }, {}), undefined);
     mkdirSync(join(dir, ".pi/agent"), { recursive: true });
     const path = join(dir, ".pi/agent/openai-guidance.json");
@@ -118,7 +121,7 @@ test("real extension hook switches models, rereads opt-outs, and leaves other ev
     assert.throws(() => run({ systemPrompt: base }, { model: model() }), /Invalid/);
     assert.equal(run({ systemPrompt: base }, { model: model("other") }), undefined);
   } finally {
-    if (home === undefined) delete process.env.HOME; else process.env.HOME = home;
+    if (home === undefined) delete process.env[homeKey]; else process.env[homeKey] = home;
     rmSync(dir, { recursive: true });
   }
 });
@@ -133,7 +136,7 @@ test("bundled files match catalog, have substantive text, and executable budget 
 });
 
 test("conditional recommendations retain their task applicability in the injected prompt", () => {
-  for (const id of ["gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-luna"]) {
+  for (const id of ["gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-luna", "gpt-5.6-terra"]) {
     const block = guidanceBlock(selectRules(model(id), tools, defaults), texts);
     assert(block.includes("For implementation requests, when using the available planning tool:"));
     if (id !== "gpt-6-astra") assert(block.includes("When a task calls for a shorter answer:"));

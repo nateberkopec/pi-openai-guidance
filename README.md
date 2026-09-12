@@ -5,7 +5,7 @@
 - **[GPT-6 Astra: Prompting best practices](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)**
 - **[Codex Prompting Guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide)**
 
-Model-specific OpenAI prompting recommendations for a personal Pi setup. Astra gets Astra instructions; Sol and Luna get GPT-5.6-family instructions. Applicable Codex coding guidance is shared. Each rule has an independent opt-out.
+Model-specific OpenAI prompting recommendations for a personal Pi setup. Astra gets Astra instructions; Sol, Luna, and Terra get GPT-5.6-family instructions. Applicable Codex coding guidance is shared. Each rule has an independent opt-out.
 
 This is a prompt extension, not a replacement harness. It preserves Pi's prompt and tools, uses no runtime network requests, and changes no API parameters or reasoning settings. See the [coverage and deviations](docs/coverage.md) before enabling it.
 
@@ -13,7 +13,7 @@ This is a prompt extension, not a replacement harness. It preserves Pi's prompt 
 
 - Pi 0.84.4 (the audited version; newer versions are not yet verified).
 - Node.js 22.19 or newer.
-- Exact model IDs `gpt-6-astra`, `gpt-5.6-sol`, or `gpt-5.6-luna` on `openai-codex` or `openai`. Other providers, aliases, and models are unchanged.
+- Exact model IDs `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.6-luna`, or `gpt-5.6-terra` on `openai-codex` or `openai`. Other providers, aliases, and models are unchanged.
 
 ## Quickstart
 

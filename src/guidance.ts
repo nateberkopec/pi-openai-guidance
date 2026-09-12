@@ -9,6 +9,7 @@ const models: Record<string, string> = {
   "gpt-6-astra": "astra",
   "gpt-5.6-sol": "family",
   "gpt-5.6-luna": "family",
+  "gpt-5.6-terra": "family",
 };
 
 export function modelFamily(model?: Model): string | undefined {

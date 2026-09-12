@@ -1,6 +1,6 @@
 # Rule reference
 
-All listed rules default on when their model and tool conditions match. `all` means all three supported models; `family` means Sol and Luna. Rule text is linked individually.
+All listed rules default on when their model and tool conditions match. `all` means all four supported models; `family` means Sol, Luna, and Terra. Rule text is linked individually.
 
 | ID | Models | Source section | Adaptation | Required tool |
 |---|---|---|---|---|
